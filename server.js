@@ -1,9 +1,9 @@
 #!/usr/bin/env nodejs
 
+const { db_connect } = require('./config');
+var url = db_connect;
 
-var url = "mongodb://localhost:27017/realtime_location";
 
-var fs = require( 'fs' );
 const express = require('express');
 var bodyParser = require('body-parser');
 var mongodb = require("mongodb");
