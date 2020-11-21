@@ -1,0 +1,86 @@
+<meta charset="UTF-8">
+<title>Historicos</title>
+
+<!-- CSS (load bootstrap from a CDN) -->
+<script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.4.3/build/ol.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.4.3/css/ol.css">
+
+<style>
+    body { 
+
+      height: 100vh;
+
+     }
+    .maincontainer {
+      display: flex;
+      justify-content: space-between;
+      flex-direction: column;
+    }
+
+    #info {
+          z-index: 1;
+          opacity: 0;
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          margin: 0;
+          background: rgba(0,60,136,0.7);
+          color: white;
+          border: 0;
+          transition: opacity 100ms ease-in;
+    }
+
+    #map {
+      /* position:absolute;
+      top:0;
+      bottom:0;
+      left:0;
+      right:0; */
+      width:100%;
+      height:600px;
+    }
+
+    #meta {
+      z-index:2;
+      color:black;
+      background:rgba(255,255,255,0.9);
+      position:absolute;
+      top:10px;
+      left:60px;
+      padding:25px;
+      width:100px;
+      border-radius: 1em;
+    }
+    #meta h1 {margin:0;}
+    
+    img { 
+          max-width:100%; 
+          height:auto; 
+      } 
+
+    a {
+      text-decoration: none;
+      /* display: inline-block; */
+      padding: 8px 16px;
+      border-radius:10px;
+      border:2px solid #ccc;
+      float: left;
+    }
+    .pTitulo{
+      text-align: center;
+    }
+    p{
+      margin: 0;
+      padding: 0;
+    }
+
+    a:hover {
+      background-color: #ddd;
+      color: black;
+    }
+
+    .previous {
+      background-color: #d84141;
+      color: black;
+    }
+</style>
