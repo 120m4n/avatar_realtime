@@ -90,6 +90,8 @@ mongodb.MongoClient.connect(url, function (err, database) {
   // Initialize the app.
   server.listen(process.env.PORT || 3000, function () {
     var port = server.address().port;
+    var date = new Date();
+    console.log(date)
     console.log("App now running on port", port);
   });
 
@@ -124,6 +126,22 @@ function extentMeters(limit){
   return [xmin, ymin, xmax, ymax];
 }
 
+function filterUniqueDates(data) {
+  const lookup = new Set();
+  
+  return data.filter(date => {
+     const serialised = date;
+    if (lookup.has(serialised)) {
+      return false;
+    } else { 
+      lookup.add(serialised);
+      return true;
+    }
+  })
+}
+
+
+
 // index page
 app.get('/historico', function(req, res) {
 
@@ -145,15 +163,22 @@ app.get('/historico', function(req, res) {
 
       // var vector = '[[111,12],[112, 13],[111, 13]]';
       var vector =[];
+      var fechas =[];
+
+      // console.log(rows)
       
       rows.forEach(function(word) {
         //console.log(word.location);
         vector.push(word.location);
+        fechas.push(word.fecha.toISOString().split('T')[0])
       });
 
 
+      // console.log(filterUniqueDates(fechas));
+      
       res.render('pages/historico', {
         avatar: avatar,
+        fechas: rows,
         limit: JSON.stringify(extent),
         tagline:  JSON.stringify(vector)
       })
@@ -208,7 +233,10 @@ app.post("/api/pushLocation", function(req, res,next) {
     user_id = req.body.user_id;
     arrayOfLocations = req.body.locations;
     var d = new Date();
-    var timeHMS = d.getUTCHours()-5 + ':'+ d.getMinutes()+ ':'+d.getSeconds() 
+    var timeUNIX = d.getTime();
+    var timeHMS = d.getHours() + ':'+ d.getMinutes()+ ':'+d.getSeconds() 
+
+    // var fechaYYYYMMDD = d.toISOString()
     
     if(user_id && arrayOfLocations) { 
         db.collection(collectionName).findOne({'user_id' : user_id},function(err,result){
@@ -219,7 +247,7 @@ app.post("/api/pushLocation", function(req, res,next) {
                 flag_maker = true;
                 if(result) {
                     updated_locations = arrayOfLocations; 
-                    db.collection(collectionName).updateOne({'user_id' : user_id},{ $set: { location: updated_locations, timespan: timeHMS} },function(err,res){
+                    db.collection(collectionName).updateOne({'user_id' : user_id},{ $set: { location: updated_locations, timespan: timeHMS, fecha: new Date() } },function(err,res){
                         if(err) throw err;
                         //console.log('actualizo');
 
@@ -231,7 +259,7 @@ app.post("/api/pushLocation", function(req, res,next) {
                     });
 
                     
-                    db.collection(historicTable).insertOne({ user_id: user_id, location: arrayOfLocations, timespan: timeHMS},function(err,res){
+                    db.collection(historicTable).insertOne({ user_id: user_id, location: arrayOfLocations, timespan: timeUNIX, fecha: new Date()},function(err,res){
                       if(err) throw err;
                       // console.log('inserto');
 
@@ -241,7 +269,7 @@ app.post("/api/pushLocation", function(req, res,next) {
                 }
                 else {
                     //crearMarkers(arrayOfLocations);
-                    db.collection(collectionName).insertOne({ user_id: user_id, location: arrayOfLocations, timespan: timeHMS},function(err,res){
+                    db.collection(collectionName).insertOne({ user_id: user_id, location: arrayOfLocations, timespan: timeHMS, fecha: new Date()},function(err,res){
                         if(err) throw err;
                         // console.log('inserto');
 
@@ -252,7 +280,7 @@ app.post("/api/pushLocation", function(req, res,next) {
                         });
                     });
 
-                    db.collection(historicTable).insertOne({ user_id: user_id, location: arrayOfLocations, timespan: timeHMS},function(err,res){
+                    db.collection(historicTable).insertOne({ user_id: user_id, location: arrayOfLocations, timespan: timeUNIX, fecha: new Date()},function(err,res){
                       if(err) throw err;
                       // console.log('inserto');
 
