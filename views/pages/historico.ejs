@@ -3,22 +3,35 @@
 <head>
     <%- include('../partials/head'); %>
 </head>
-<body class="container">
+<body>
 
-    <header>
+    <!-- <header>
         <%- include('../partials/header'); %>
-    </header>
+    </header> -->
 
-    <main class="maincontainer">
-        <div class="jumbotron">
-            
-            <p><%= avatar %></p>
-
+    <div class="container">
+        <div class="header">
+            <div class="left-header">
+                <a class="previous" href="#" onclick="history.go(-1)">&laquo;</a> 
+            </div>
+            <div class="central-header">
+                <div class="title">
+                    Datos Historicos
+                </div>
+                <dif class="user_id">
+                    <p><%= avatar %></p>
+                </dif>
+                 
+            </div>
+            <div class="right-header"></div>
         </div>
-        <div id="map" class="map"><div id="popup"></div></div>
-
-
-    </main>
+        <div class="contenido">
+           <div id="map" class="map"></div> 
+        </div>
+        <div class="sidebar-1"> </div>
+        <div class="sidebar-2"> </div>
+        <div class="footer">footer</div>
+    </div>
     <script src="./js/historico.js"></script>
     <script>
         var data = <%= tagline %>  //var test is now assigned to getTest which will only work on browsers
