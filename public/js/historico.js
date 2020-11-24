@@ -96,7 +96,7 @@ var segmento = new ol.Feature({
       // arrows
       styles.push(
         new ol.style.Style({
-          geometry: new ol.geom.Point(end),
+          geometry: new ol.geom.Point([start[0] + dx/2, start[1] + dy/2]),
           image: new ol.style.Icon({
             src: 'image/arrow.png',
             // anchor: [0.5, 0.5],
