@@ -52,6 +52,77 @@ var markerVectorLayer = new ol.layer.Vector({
     style:style_marker
 });
 
-// add style to Vector layer style map
-map.addLayer(markerVectorLayer);
 
+
+function filterUniqueDates(data) {
+    const lookup = new Set();
+    
+    return data.filter(date => {
+       const serialised = date;
+      if (lookup.has(serialised)) {
+        return false;
+      } else { 
+        lookup.add(serialised);
+        return true;
+      }
+    })
+  }
+
+  //Adding a segmento a una linea
+var segmento = new ol.Feature({
+    //  geometry: new ol.geom.LineString([[-8325240.41,1232759.48],[-8325641.41,1232860.48] ], 'XY')
+
+});
+
+  var linesource = new ol.source.Vector({
+    features: [segmento]
+  });
+
+  var styleFunction = function (feature) {
+    var geometry = feature.getGeometry();
+    var styles = [
+      // linestring
+      new ol.style.Style({
+        stroke: new ol.style.Stroke({
+          color: '#0026FF',
+          width: 1,
+        }),
+      }) ];
+  
+    geometry.forEachSegment(function (start, end) {
+      var dx = end[0] - start[0];
+      var dy = end[1] - start[1];
+      var rotation = Math.atan2(dy, dx);
+      // arrows
+      styles.push(
+        new ol.style.Style({
+          geometry: new ol.geom.Point(end),
+          image: new ol.style.Icon({
+            src: 'image/arrow.png',
+            // anchor: [0.5, 0.5],
+            rotateWithView: true,
+            rotation: -rotation,
+          }),
+        })
+      );
+    });
+  
+    return styles;
+  };
+
+var stylesegmento = new ol.style.Style({
+    stroke: new ol.style.Stroke({
+        color: 'brown',
+        width: 1.8
+    })
+});
+
+  var vector = new  ol.layer.Vector({
+    source: linesource,
+    style: styleFunction
+  });
+
+ // add style to Vector layer style map se agrega vacio
+map.addLayer(vector);
+  // add style to Vector layer style map se agrega vacio
+map.addLayer(markerVectorLayer);

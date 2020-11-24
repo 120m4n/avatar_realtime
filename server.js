@@ -167,20 +167,19 @@ app.get('/historico', function(req, res) {
 
       // console.log(rows)
       
-      rows.forEach(function(word) {
-        //console.log(word.location);
-        vector.push(word.location);
-        fechas.push(word.fecha.toISOString().split('T')[0])
-      });
+      // rows.forEach(function(word) {
+      //   //console.log(word.location);
+      //   vector.push(word.location);
+      //   fechas.push(word.fecha.toISOString().split('T')[0])
+      // });
 
 
       // console.log(filterUniqueDates(fechas));
       
       res.render('pages/historico', {
         avatar: avatar,
-        fechas: rows,
-        limit: JSON.stringify(extent),
-        tagline:  JSON.stringify(vector)
+        data: rows,
+        limit: JSON.stringify(extent)
       })
     });
 
@@ -259,7 +258,7 @@ app.post("/api/pushLocation", function(req, res,next) {
                     });
 
                     
-                    db.collection(historicTable).insertOne({ user_id: user_id, location: arrayOfLocations, timespan: timeUNIX, fecha: new Date()},function(err,res){
+                    db.collection(historicTable).insertOne({ user_id: user_id, location: arrayOfLocations, timespan: timeUNIX, fecha: new Date(2019, 11, 24, 10, 33, 30, 0)},function(err,res){
                       if(err) throw err;
                       // console.log('inserto');
 
@@ -280,7 +279,7 @@ app.post("/api/pushLocation", function(req, res,next) {
                         });
                     });
 
-                    db.collection(historicTable).insertOne({ user_id: user_id, location: arrayOfLocations, timespan: timeUNIX, fecha: new Date()},function(err,res){
+                    db.collection(historicTable).insertOne({ user_id: user_id, location: arrayOfLocations, timespan: timeUNIX, fecha: new Date(2019, 11, 24, 10, 33, 30, 0)},function(err,res){
                       if(err) throw err;
                       // console.log('inserto');
 
