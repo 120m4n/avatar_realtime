@@ -28,32 +28,32 @@ var view = new ol.View({
 });
 
 
-function switch_eval(context) {
-    //varios circuitos
-    var feature = context.feature;
-    var color = '';
-    var expr = feature.get('CIRCUITO')
-    var temp = String(expr ) 
-    var n = temp.search("20");
+// function switch_eval(context) {
+//     //varios circuitos
+//     var feature = context.feature;
+//     var color = '';
+//     var expr = feature.get('CIRCUITO')
+//     var temp = String(expr ) 
+//     var n = temp.search("20");
     
-    color = 'rgba(0, 0, 254, 0.7)';
+//     color = 'rgba(0, 0, 254, 0.7)';
     
-    if ((n > -1) && (n = 3))  {
-        color='rgba(0,0, 254, 0.7)'; 
-    } 
+//     if ((n > -1) && (n = 3))  {
+//         color='rgba(0,0, 254, 0.7)'; 
+//     } 
       
-    n = temp.search("30");
-    if ((n > -1) && (n = 3))  {
-        color='rgba(254,0, 0, 1.0)'; 
-    }  
+//     n = temp.search("30");
+//     if ((n > -1) && (n = 3))  {
+//         color='rgba(254,0, 0, 1.0)'; 
+//     }  
 
-    n = temp.search("40");
-    if ((n > -1) && (n = 3))  {
-        color='rgba(255, 29, 206, 0.8)';
-    }      
+//     n = temp.search("40");
+//     if ((n > -1) && (n = 3))  {
+//         color='rgba(255, 29, 206, 0.8)';
+//     }      
 
-    return color;
-}
+//     return color;
+// }
 
 function resolultion_eval(context) {
     //varios circuitos
@@ -207,6 +207,7 @@ var baseMapLayer = new ol.layer.Tile({
     //}),
     source: new ol.source.OSM(),
     maxZoom: 20,
+    opacity: 0.6,
 
 });
 
