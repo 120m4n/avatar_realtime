@@ -24,7 +24,8 @@ var map = new ol.Map({
     view: view
 });
 
-var style_marker = new ol.style.Style({
+var styles = {
+  'marker' : new ol.style.Style({
     image: new ol.style.Circle({
         radius: 3.5,
         fill: new ol.style.Fill({
@@ -33,7 +34,24 @@ var style_marker = new ol.style.Style({
             color: [0,0,0], width: 0.5
             })
     })
-});
+  }),
+
+  'start': new ol.style.Style({
+    image: new ol.style.Icon({
+      anchor: [0.5, 1],
+      src: 'image/icon_start.png',
+    }),
+  }),
+
+  'end': new ol.style.Style({
+    image: new ol.style.Icon({
+      anchor: [0.5, 1],
+      src: 'image/icon_end.png',
+    }),
+  })
+
+
+}
 
 //Adding a marker on the map
 var marker = new ol.Feature({
@@ -49,7 +67,9 @@ var vectorSource = new ol.source.Vector({
 var markerVectorLayer = new ol.layer.Vector({
     name: 'historico',
     source: vectorSource,
-    style:style_marker
+    style: function (feature) {
+       return styles[feature.get('type')]; 
+    }
 });
 
 

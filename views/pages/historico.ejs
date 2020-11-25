@@ -34,7 +34,7 @@
                 <option value="" selected>Fecha</option>
             </select>
         </div>
-        <div class="footer">footer</div>
+        <div class="footer">Electro Software SAS</div>
     </div>
     <script src="./js/historico.js"></script>
     <script>
@@ -88,15 +88,24 @@
                     temp_date = data[i].fecha.split('T')[0];
                     lat = temp[1];
                     lon = temp[0];
+                    geom_start = null;
+                    geom_end = null;
 
                     if (x === temp_date) {
                         var coord = ol.proj.transform([lon,lat], 'EPSG:4326', 'EPSG:3857');
                         temp_segmento.push([coord[0], coord[1]]);
 
+                        
+
                         geom = new ol.geom.Point(
                             ol.proj.transform([lon,lat], 'EPSG:4326', 'EPSG:3857')
                         );
-                        feature = new ol.Feature(geom);
+
+                        feature = new ol.Feature({
+                            type: 'marker',
+                            geometry:geom
+                        });
+
                         if (data[i].hasOwnProperty('fecha')){
                             feature.set('date', data[i].fecha.split('T')[0]) ;
                             feature.set('time', data[i].fecha.split('T')[1]) ;
@@ -109,14 +118,38 @@
                 }
         
         
-                vectorSource.addFeatures(features);
+                
                 let temp_feature = new ol.Feature({
                     geometry : new ol.geom.LineString(temp_segmento,'XY' ),
                 });
-                linesource.addFeature(temp_feature)
+               
+
+                var routeLength = features.length;
+                var startMarker = new ol.Feature({
+                    type: 'start',
+                    geometry: features[0].get('geometry'),
+                });
+                
+                var endMarker = new ol.Feature({
+                    type: 'end',
+                    geometry: features[routeLength - 1].get('geometry'),
+                });
+                // features.push(startMarker);
+                // features.push(endMarker);
+
+                linesource.addFeature(temp_feature);
+                vectorSource.addFeatures(features);
+                vectorSource.addFeature(startMarker);
+                vectorSource.addFeature(endMarker);
 
                 map.getView().fit(features[features.length - 1].getGeometry(),{maxZoom: 16});
             }
+
+
+            
+
+
+
         }
        
     </script>

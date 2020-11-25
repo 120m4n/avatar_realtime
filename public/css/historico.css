@@ -102,4 +102,5 @@ body{
 .container .footer{
     background: #2f2f2f;
     grid-area: footer; 
+    color: white;
 }
