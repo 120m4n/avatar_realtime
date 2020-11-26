@@ -9,6 +9,7 @@ var bodyParser = require('body-parser');
 var mongodb = require("mongodb");
 var app = express();
 var http = require('http');
+var moment = require('moment');
 // var https  = require('https');
 
 // var options = {  
@@ -231,11 +232,19 @@ app.post("/api/pushLocation", function(req, res,next) {
     
     user_id = req.body.user_id;
     arrayOfLocations = req.body.locations;
-    var d = new Date();
-    var timeUNIX = d.getTime();
-    var timeHMS = d.getHours() + ':'+ d.getMinutes()+ ':'+d.getSeconds() 
+    // var d = new Date();
+    // var timeUNIX = d.getTime();
+    // var timeHMS = d.getHours() + ':'+ d.getMinutes()+ ':'+d.getSeconds() 
+    var timeHMS = Math.floor(Date.now() / 1000)-18000;
 
-    // var fechaYYYYMMDD = d.toISOString()
+    var today = moment(new Date()).format('YYYY-MM-DD[T00:00:00.000Z]');
+
+  //   var timeOBJ = {
+  //     hora: d.getHours() ,
+  //     minuto: d.getMinutes(),
+  //     segundo: d.getSeconds()
+  // };
+
     
     if(user_id && arrayOfLocations) { 
         db.collection(collectionName).findOne({'user_id' : user_id},function(err,result){
@@ -258,7 +267,7 @@ app.post("/api/pushLocation", function(req, res,next) {
                     });
 
                     
-                    db.collection(historicTable).insertOne({ user_id: user_id, location: arrayOfLocations, timespan: timeUNIX, fecha: new Date()},function(err,res){
+                    db.collection(historicTable).insertOne({ user_id: user_id, location: arrayOfLocations, timespan: timeHMS, fecha: new Date(today)},function(err,res){
                       if(err) throw err;
                       // console.log('inserto');
 
@@ -279,7 +288,7 @@ app.post("/api/pushLocation", function(req, res,next) {
                         });
                     });
 
-                    db.collection(historicTable).insertOne({ user_id: user_id, location: arrayOfLocations, timespan: timeUNIX, fecha: new Date()},function(err,res){
+                    db.collection(historicTable).insertOne({ user_id: user_id, location: arrayOfLocations, timespan: timeHMS, fecha: new Date(today)},function(err,res){
                       if(err) throw err;
                       // console.log('inserto');
 
