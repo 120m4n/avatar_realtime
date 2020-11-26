@@ -235,9 +235,10 @@ app.post("/api/pushLocation", function(req, res,next) {
     // var d = new Date();
     // var timeUNIX = d.getTime();
     // var timeHMS = d.getHours() + ':'+ d.getMinutes()+ ':'+d.getSeconds() 
-    var timeHMS = Math.floor(Date.now() / 1000)-18000;
+    var timeUNIX = Math.floor(Date.now() / 1000)-18000;
+    var timeHMS =  timeUNIX* 1000;
 
-    var today = moment(new Date()).format('YYYY-MM-DD[T00:00:00.000Z]');
+    var today = moment(new Date(timeHMS)).format('YYYY-MM-DD[T00:00:00.000Z]');
 
   //   var timeOBJ = {
   //     hora: d.getHours() ,
@@ -267,7 +268,7 @@ app.post("/api/pushLocation", function(req, res,next) {
                     });
 
                     
-                    db.collection(historicTable).insertOne({ user_id: user_id, location: arrayOfLocations, timespan: timeHMS, fecha: new Date(today)},function(err,res){
+                    db.collection(historicTable).insertOne({ user_id: user_id, location: arrayOfLocations, timespan: timeUNIX, fecha: new Date(today)},function(err,res){
                       if(err) throw err;
                       // console.log('inserto');
 
@@ -288,7 +289,7 @@ app.post("/api/pushLocation", function(req, res,next) {
                         });
                     });
 
-                    db.collection(historicTable).insertOne({ user_id: user_id, location: arrayOfLocations, timespan: timeHMS, fecha: new Date(today)},function(err,res){
+                    db.collection(historicTable).insertOne({ user_id: user_id, location: arrayOfLocations, timespan: timeUNIX, fecha: new Date(today)},function(err,res){
                       if(err) throw err;
                       // console.log('inserto');
 
