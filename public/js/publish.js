@@ -2,6 +2,7 @@
 var zoom = 12;
 var center = ol.proj.fromLonLat([-74.8038, 10.9983]);
 var rotation = 0;
+var url_map = 'http://198.58.115.96:8080';
 
 if (window.location.hash !== '') {
   // try to restore center, zoom-level and rotation from the URL
@@ -156,7 +157,7 @@ var vtramomt = new ol.layer.VectorTile({
     title: 'Tramos MT',
     source: new ol.source.VectorTile({
         format: new ol.format.MVT(),
-        url:'http://34.68.181.212:8080/maps/essa/tramomt/{z}/{x}/{y}.pbf'
+        url:url_map + '/maps/essa/tramomt/{z}/{x}/{y}.pbf'
     }),
     minZoom: 7,
     maxZoom: 20,
@@ -167,7 +168,7 @@ var vapoyo = new ol.layer.VectorTile({
     title: 'Apoyos',
     source: new ol.source.VectorTile({
         format: new ol.format.MVT(),
-        url:'http://34.68.181.212:8080/maps/essa/apoyos/{z}/{x}/{y}.pbf'
+        url:url_map + '/maps/essa/apoyos/{z}/{x}/{y}.pbf'
     }),
     minZoom: 17,
     maxZoom: 20,
@@ -179,7 +180,7 @@ var vpconsumo = new ol.layer.VectorTile({
     title: 'PuntoConsumo',
     source: new ol.source.VectorTile({
         format: new ol.format.MVT(),
-        url:'http://34.68.181.212:8080/maps/essa/pconsumo/{z}/{x}/{y}.pbf'
+        url:url_map + '/maps/essa/pconsumo/{z}/{x}/{y}.pbf'
     }),
     minZoom: 18,
     maxZoom: 20,
@@ -191,7 +192,7 @@ var vtrafos = new ol.layer.VectorTile({
     title: 'Trafos',
     source: new ol.source.VectorTile({
         format: new ol.format.MVT(),
-        url:'http://34.68.181.212:8080/maps/essa/trafos/{z}/{x}/{y}.pbf'
+        url:url_map + '/maps/essa/trafos/{z}/{x}/{y}.pbf'
     }),
     minZoom: 17,
     maxZoom: 20,
@@ -202,13 +203,9 @@ var vtrafos = new ol.layer.VectorTile({
 
 
 var baseMapLayer = new ol.layer.Tile({
-    //source: new ol.source.XYZ({
-    //  url: 'https://c.tile.thunderforest.com/transport/{z}/{x}/{y}.png'
-    //}),
     source: new ol.source.OSM(),
     maxZoom: 20,
     opacity: 0.6,
-
 });
 
 //Construct the Map Object
@@ -218,16 +215,6 @@ var map = new ol.Map({
     view: view
 });
 
-// ol.hash(map);
-
-//GEolocalizacion
-// var geolocation = new ol.Geolocation({
-//     // enableHighAccuracy must be set to true to have the heading value.
-//     trackingOptions: {
-//       enableHighAccuracy: true
-//     },
-//     projection: view.getProjection()
-// });
 
 var styleclientes = new ol.style.Style({
     image: new ol.style.Circle({
@@ -288,28 +275,8 @@ var style_avatar = function(feature, resolution){
           })]; 
 };   
 
-// function el(id) {
-//     return document.getElementById(id);
-// }
-
-// el('track').addEventListener('change', function() {
-//     geolocation.setTracking(this.checked);
-// });
-
-// handle geolocation error.
-// geolocation.on('error', function(error) {
-//     var info = document.getElementById('info');
-//     info.innerHTML = error.message;
-//     info.style.display = '';
-// });
 
 var positionFeature = new ol.Feature();
-// geolocation.on('change:position', function() {
-//     var coordinates = geolocation.getPosition();
-//     positionFeature.setGeometry(coordinates ?
-//       new ol.geom.Point(coordinates) : null);
-// });
-
 
 var markerGeoVector = new ol.layer.Vector({
     source: new ol.source.Vector({
@@ -329,8 +296,6 @@ var marker = new ol.Feature({
     // )
 });
   
-// marker.setStyle(iconStyle);
-
 var vectorSource = new ol.source.Vector({
     features: [marker]
 });
@@ -466,46 +431,6 @@ window.addEventListener('popstate', function(event) {
 //   info.innerText = JSON.stringify(properties, null, 2);
 //   info.style.opacity = 1;
 // }
-
-// map.on('click', function(evt){
-//     let _tempcoor = ol.proj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326');
-//     // var item = {};
-//     // item.Coordinate = {};
-//     // item.Coordinate.Longitude = _tempcoor[0];
-//     // item.Coordinate.Latitude = _tempcoor[1];
-//     // updateCoordinate(item);
-//     //console.log();
-//     // function addMarker(coord){
-//     //     let markerpoint = new ol.Feature({
-//     //         geometry: new ol.geom.Point(
-//     //             ol.proj.fromLonLat([_tempcoor[0], _tempcoor[1]])
-//     //         )
-//     //     });
-//     //     return markerpoint
-//     // }
-
-//     // vectorSource.addFeature( addMarker(_tempcoor));
-//     socket.emit("marker", _tempcoor)
-// });
-// var longlats =
-// [[80.24586,12.98598],
-// [80.24537,12.98597],
-// [80.24522,12.98596],
-// [80.24522,12.98614],
-// [80.24523,12.98626]];
-// const socket = io({ transports: ['websocket'] });
-// var count = 1;
-// setInterval(function() {
-//   console.log(count);
-//   if (count < 10000){
-//     var item = {};
-//     item.Coordinate = {};
-//     item.Coordinate.Longitude = longlats[count % 5][0];
-//     item.Coordinate.Latitude = longlats[count % 5][1];
-//     count++;
-//     socket.emit('lastKnownLocation', item);
-//   }
-// }, 5000);
 
 
 var element = document.getElementById('popup');
