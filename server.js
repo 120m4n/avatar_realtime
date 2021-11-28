@@ -161,21 +161,6 @@ app.get('/historico', function(req, res) {
 
     db.collection(historicTable).find({'user_id' : name},{_id:0, user_id:0, timespan:0}).toArray( function(err, rows) {
       if(err) throw err;
-
-      // var vector = '[[111,12],[112, 13],[111, 13]]';
-      var vector =[];
-      var fechas =[];
-
-      // console.log(rows)
-      
-      // rows.forEach(function(word) {
-      //   //console.log(word.location);
-      //   vector.push(word.location);
-      //   fechas.push(word.fecha.toISOString().split('T')[0])
-      // });
-
-
-      // console.log(filterUniqueDates(fechas));
       
       res.render('pages/historico', {
         avatar: avatar,
@@ -232,19 +217,10 @@ app.post("/api/pushLocation", function(req, res,next) {
     
     user_id = req.body.user_id;
     arrayOfLocations = req.body.locations;
-    // var d = new Date();
-    // var timeUNIX = d.getTime();
-    // var timeHMS = d.getHours() + ':'+ d.getMinutes()+ ':'+d.getSeconds() 
     var timeUNIX = Math.floor(Date.now() / 1000)-18000;
     var timeHMS =  timeUNIX* 1000;
 
     var today = moment(new Date(timeHMS)).format('YYYY-MM-DD[T00:00:00.000Z]');
-
-  //   var timeOBJ = {
-  //     hora: d.getHours() ,
-  //     minuto: d.getMinutes(),
-  //     segundo: d.getSeconds()
-  // };
 
     
     if(user_id && arrayOfLocations) { 
@@ -256,7 +232,7 @@ app.post("/api/pushLocation", function(req, res,next) {
                 flag_maker = true;
                 if(result) {
                     updated_locations = arrayOfLocations; 
-                    db.collection(collectionName).updateOne({'user_id' : user_id},{ $set: { location: updated_locations, timespan: timeHMS, fecha: new Date() } },function(err,res){
+                    db.collection(collectionName).updateOne({'user_id' : user_id},{ $set: { location: updated_locations, timespan: timeUNIX, fecha: new Date() } },function(err,res){
                         if(err) throw err;
                         //console.log('actualizo');
 
@@ -278,7 +254,7 @@ app.post("/api/pushLocation", function(req, res,next) {
                 }
                 else {
                     //crearMarkers(arrayOfLocations);
-                    db.collection(collectionName).insertOne({ user_id: user_id, location: arrayOfLocations, timespan: timeHMS, fecha: new Date()},function(err,res){
+                    db.collection(collectionName).insertOne({ user_id: user_id, location: arrayOfLocations, timespan: timeUNIX, fecha: new Date()},function(err,res){
                         if(err) throw err;
                         // console.log('inserto');
 
